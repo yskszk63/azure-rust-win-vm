@@ -170,13 +170,29 @@ function Install-ChocoAndGitBash {
 
     & choco install git -params '"/GitAndUnixToolsOnPath"' -y *>&1 | Write-Output
 
+    Set-Item Env:Path "C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;$ENV:Path"
+    Invoke-WebRequest -Uri http://repo.msys2.org/msys/x86_64/zstd-1.4.5-2-x86_64.pkg.tar.xz -OutFile zstd.tar.xz
+    &"tar.exe" CvxJf / zstd.tar.xz *>&1 | Write-Output
+
+    Invoke-WebRequest -Uri http://repo.msys2.org/msys/x86_64/rsync-3.2.2-2-x86_64.pkg.tar.zst -OutFile rsync.tar.zst
+    &"tar.exe" Cxvf / rsync.tar.zst --zstd *>&1 | Write-Output
+
+    Invoke-WebRequest -Uri http://repo.msys2.org/msys/x86_64/openbsd-netcat-1.206_1-1-x86_64.pkg.tar.xz -OutFile openbsd-netcat-1.tar.xz
+    &"tar.exe" CxvJf / openbsd-netcat-1.tar.xz *>&1 | Write-Output
+
+    Invoke-WebRequest -Uri http://repo.msys2.org/msys/x86_64/libzstd-1.4.5-2-x86_64.pkg.tar.xz -OutFile libzstd.tar.xz
+    &"tar.exe" CxvJf / libzstd.tar.xz *>&1 | Write-Output
+
+    Invoke-WebRequest -Uri http://repo.msys2.org/msys/x86_64/libxxhash-0.8.0-1-x86_64.pkg.tar.zst -OutFile libxxhash.tar.zst
+    &"tar.exe" Cvxf / libxxhash.tar.zst --zstd *>&1 | Write-Output
+
     Write-Host 'DONE Install ChocoAndGitBash.'
 }
 
 function Main {
-    Install-MSVC
     Install-OpenSSH
     Setup-User
+    Install-MSVC
     Install-Rustup
     Install-ChocoAndGitBash
 

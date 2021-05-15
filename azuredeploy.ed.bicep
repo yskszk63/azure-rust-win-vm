@@ -5,6 +5,9 @@ param vmpass string
 param prefix string
 param publickey string
 
+param setupscript string = 'https://raw.githubusercontent.com/yskszk63/azure-rust-win-vm/main/setup.ps1'
+param setupscriptTimestamp int = 0
+
 var location = resourceGroup().location
 
 resource nsg 'Microsoft.Network/networkSecurityGroups@2020-07-01' = {
@@ -137,9 +140,9 @@ resource extension 'Microsoft.Compute/virtualMachines/extensions@2020-12-01' = {
         autoUpgradeMinorVersion: true
         settings: {
             fileUris: [
-                'https://a9aee37ade8f.ngrok.io/setup.ps1'
+                setupscript
             ]
-            timestamp: 0
+            timestamp: setupscriptTimestamp
             commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File setup.ps1 -Publickey "${publickey}"'
         }
     }
